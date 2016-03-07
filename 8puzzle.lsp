@@ -21,10 +21,10 @@ Written Spring 2016 for CSC447/547 AI class.
 	)
 )
 
+(defun IsSolved (list)
+  (equal list '(1 2 3 8 0 4 7 6 5))
+)
+
 (setf Puzzle (ReadInPuzzle (car *args*)))
 
 (print Puzzle)
-
-
- 
-  
