@@ -37,6 +37,34 @@ Written Spring 2016 for CSC447/547 AI class.
 	)
 )
 
+(defun MoveBlankRight (list)
+	(let ((x (position 0 list)) (nlist (copy-list list)))
+		(cond
+			( (= (mod (+ x 1) 3) 0) nil)
+			(t
+				(setf (nth x nlist) (nth (+ x 1) nlist) )
+				(setf (nth (+ x 1) nlist) 0 )
+				nlist
+			)
+		)
+	)
+)
+
+(defun MoveBlankLeft (list)
+	(let ((x (position 0 list)) (nlist (copy-list list)))
+		(cond
+			( (= (mod (+ x 1) 3) 1) nil)
+			(t
+				(setf (nth x nlist) (nth (- x 1) nlist) )
+				(setf (nth (- x 1) nlist) 0 )
+				nlist
+			)
+		)
+	)
+)
+
+	
 (setf Puzzle (ReadInPuzzle (car *args*)))
 
 (print Puzzle)
+
