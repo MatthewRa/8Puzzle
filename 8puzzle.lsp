@@ -26,14 +26,22 @@ Written Spring 2016 for CSC447/547 AI class.
 )
 
 (defun MoveBlankUp (list)
-	(if (> (position 0 list) 3)
-		(rotatef (nth (position 0 list) list) (nth (-(position 0 list) 3) list))
+	(let ((x (position 0 list)) (nlist (copy-list list)))
+		(when (> x 3)
+				(setf (nth x nlist) (nth (- x 3) nlist) )
+				(setf (nth (- x 3) nlist) 0 )
+				nlist
+		)
 	)
 )
 
 (defun MoveBlankDown (list)
-	(if (< (position 0 list) 6)
-		(rotatef (nth (position 0 list) list) (nth (+(position 0 list) 3) list))
+		(let ((x (position 0 list)) (nlist (copy-list list)))
+		(when (< x 6)
+				(setf (nth x nlist) (nth (+ x 3) nlist) )
+				(setf (nth (+ x 3) nlist) 0 )
+				nlist
+		)
 	)
 )
 
