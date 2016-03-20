@@ -15,8 +15,8 @@ Written Spring 2016 for CSC447/547 AI class.
 
 (defun Start(args)
 	(cond
-			
-		((= (length args) 1)	
+
+		((= (length args) 1)
 			(setf Puzzle (ReadInPuzzle (car args)))
 		)
 ))
@@ -34,4 +34,3 @@ Written Spring 2016 for CSC447/547 AI class.
 (Start *args*)
 
 (print Puzzle)
-
