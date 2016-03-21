@@ -46,11 +46,12 @@ Written Spring 2016 for CSC447/547 AI class.
 (defun main ( args )
     "(main args): emulate a main function, called with command-line args"
     (format t "~D command line arguments: ~A~%" (length args) args)
-	(Start *args*)
+	(Start args)
 	(format t "Starting Puzzle: ~A~%~%" Puzzle)
 	
 	(format t "BFS graph search ~%")
 	(format t "---------------- ~%")
+	(BFS_GenerateSuccessors Puzzle)
 	
 	(format t "DFID graph search ~%")
 	(format t "----------------- ~%")
