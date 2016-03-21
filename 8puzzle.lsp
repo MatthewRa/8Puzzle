@@ -42,4 +42,24 @@ Written Spring 2016 for CSC447/547 AI class.
 	)
 )
 
-(Start *args*)
+; main function
+(defun main ( args )
+    "(main args): emulate a main function, called with command-line args"
+    (format t "~D command line arguments: ~A~%" (length args) args)
+	(Start *args*)
+	(format t "Starting Puzzle: ~A~%~%" Puzzle)
+	
+	(format t "BFS graph search ~%")
+	(format t "---------------- ~%")
+	
+	(format t "DFID graph search ~%")
+	(format t "----------------- ~%")
+	
+	(format t "A* graph search ~%")
+	(format t "--------------- ~%")
+)
+
+; call the main function, passing command-line arguments
+(main *ARGS*)
+
+
