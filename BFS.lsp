@@ -1,7 +1,4 @@
 (load 'PuzzleFuncs)
-(defvar *OPEN* nil)
-(defvar *CLOSED* nil)
-(defvar *SOLUTION* nil)
 (defvar *EXPANDED* 0)
 (defvar *GENERATED* 0)
 (defvar *DISTINCT* 0)
@@ -21,9 +18,9 @@
 (defun BFS_GenerateSuccessors (list)
     (let ((blankPosition (position 0 list)) (listc '()))
 		
-		;(format t "Blank Position: ~D~%" blankPosition)
+		(format t "Expanding Node (Blank Position: ~D)~%" blankPosition)
 		
-		(when (> blankPosition 3) ; Can Move up
+		(when (> blankPosition 2) ; Can Move up
 			(if (null listc) ; check if listc is nill before trying to add to it
 				(setf listc (list (MoveBlankUp list))) ; then
 				(setf listc (append listc (list (MoveBlankUp list)))) ;else
@@ -50,6 +47,7 @@
 				(setf listc (append listc (list (MoveBlankLeft list)))) ;else
 			)
 		)
+		;(format t "Abort to return ~A ~%" listc)
     )
 )
 
@@ -78,8 +76,11 @@
 
         ; add successors of current node to OPEN
         (dolist (child (BFS_GenerateSuccessors (node-state curNode)))
+			
             ; for each child node
             (setf child (make-node :state child :parent (node-state curNode)))
+			
+			(format t "children: ~A~%" child)
 			
 			;
 			(setf *GENERATED* (1+ *GENERATED*))
