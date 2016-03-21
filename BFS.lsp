@@ -78,20 +78,19 @@
 
         ; add successors of current node to OPEN
         (dolist (child (BFS_GenerateSuccessors (node-state curNode)))
-
-			(format t "Child list: ~A~%~%" child)
             ; for each child node
             (setf child (make-node :state child :parent (node-state curNode)))
 			
 			(setf *GENERATED* (1+ *GENERATED*))
 
             ; if the node is not on OPEN or CLOSED
-            (if (and (not (member child OPEN   :test #'equal-states))
+            (when (and (not (member child OPEN   :test #'equal-states))
                      (not (member child CLOSED :test #'equal-states)))
 
+				(setf *DISTINCT* (1+ *DISTINCT*))
                 ; add it to the OPEN list
                 (cond
-
+					
                     ; BFS - add to end of OPEN list (queue)
                     ((eq type 'bfs) (setf OPEN (append OPEN (list child))))
                 )
