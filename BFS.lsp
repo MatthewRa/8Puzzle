@@ -81,6 +81,7 @@
             ; for each child node
             (setf child (make-node :state child :parent (node-state curNode)))
 			
+			;
 			(setf *GENERATED* (1+ *GENERATED*))
 
             ; if the node is not on OPEN or CLOSED
