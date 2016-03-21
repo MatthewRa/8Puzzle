@@ -51,7 +51,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	
 	(format t "BFS graph search ~%")
 	(format t "---------------- ~%")
-	(BFS_GenerateSuccessors Puzzle)
+	(bfs Puzzle)
 	
 	(format t "DFID graph search ~%")
 	(format t "----------------- ~%")

@@ -21,8 +21,7 @@
 (defun BFS_GenerateSuccessors (list)
     (let ((blankPosition (position 0 list)) (listc '()))
 		
-		(format t "Blank Position: ~D~%" blankPosition)
-		(format t "List: ~A~%" listc)
+		;(format t "Blank Position: ~D~%" blankPosition)
 		
 		(when (> blankPosition 3) ; Can Move up
 			(if (null listc) ; check if listc is nill before trying to add to it
@@ -51,8 +50,6 @@
 				(setf listc (append listc (list (MoveBlankLeft list)))) ;else
 			)
 		)
-		
-		(format t "After List: ~A~%~%" listc)
     )
 )
 
@@ -77,13 +74,16 @@
         (setf CLOSED (cons curNode CLOSED))
 		
 		; Keep track of number of expanded nodes
-		(setf *Expanded* (+ *Expanded* 1))
+		(setf *Expanded* (1+ *Expanded*))
 
         ; add successors of current node to OPEN
-        (dolist (child (GenerateSuccessors (node-state curNode)))
+        (dolist (child (BFS_GenerateSuccessors (node-state curNode)))
 
+			(format t "Child list: ~A~%~%" child)
             ; for each child node
             (setf child (make-node :state child :parent (node-state curNode)))
+			
+			(setf *GENERATED* (1+ *GENERATED*))
 
             ; if the node is not on OPEN or CLOSED
             (if (and (not (member child OPEN   :test #'equal-states))
