@@ -18,7 +18,7 @@
 (defun BFS_GenerateSuccessors (list)
     (let ((blankPosition (position 0 list)) (listc '()))
 		
-		(format t "Expanding Node (Blank Position: ~D)~%" blankPosition)
+		;(format t "Expanding Node (Blank Position: ~D)~%" blankPosition)
 		
 		(when (> blankPosition 2) ; Can Move up
 			(if (null listc) ; check if listc is nill before trying to add to it
@@ -47,8 +47,9 @@
 				(setf listc (append listc (list (MoveBlankLeft list)))) ;else
 			)
 		)
-		;(format t "Abort to return ~A ~%" listc)
+		(return-from BFS_GenerateSuccessors listc) ; Return listc
     )
+	
 )
 
 ; Given a start state (BFS) return a path from the start to the goal.
@@ -80,7 +81,7 @@
             ; for each child node
             (setf child (make-node :state child :parent (node-state curNode)))
 			
-			(format t "children: ~A~%" child)
+			;(format t "children: ~A~%" child)
 			
 			;
 			(setf *GENERATED* (1+ *GENERATED*))
