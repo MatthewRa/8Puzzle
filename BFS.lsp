@@ -1,4 +1,7 @@
 (load 'PuzzleFuncs)
+(defvar *EXPANDED* 0)
+(defvar *GENERATED* 0)
+(defvar *DISTINCT* 0)
 
 ; Node structure: stores state and parent.
 (defstruct node state parent)
@@ -11,8 +14,43 @@
 ; Breadth-first-search implements the OPEN list as a QUEUE of (state parent) nodes.
 (defun bfs (start) (SearchBfs start 'bfs))
 
-; Depth-first-search implements the OPEN list as a STACK of (state parent) nodes.
-(defun dfs (start) (SearchBfs start 'dfs))
+; Method that generates successors for a node
+(defun BFS_GenerateSuccessors (list)
+    (let ((blankPosition (position 0 list)) (listc '()))
+		
+		;(format t "Expanding Node (Blank Position: ~D)~%" blankPosition)
+		
+		(when (> blankPosition 2) ; Can Move up
+			(if (null listc) ; check if listc is nill before trying to add to it
+				(setf listc (list (MoveBlankUp list))) ; then
+				(setf listc (append listc (list (MoveBlankUp list)))) ;else
+			)
+		)
+		
+		(when (< blankPosition 6) ; Can Move Down 
+			(if (null listc) ; check if listc is nill before trying to add to it
+				(setf listc (list (MoveBlankDown list))) ; then
+				(setf listc (append listc (list (MoveBlankDown list)))) ;else
+			)
+		)
+		
+		(when (not (= (mod (+ blankPosition 1) 3) 0)) ; Can Move Right
+			(if (null listc) ; check if listc is nill before trying to add to it
+				(setf listc (list (MoveBlankRight list))) ; then
+				(setf listc (append listc (list (MoveBlankRight list)))) ;else
+			)
+		)
+		
+		(when (not (= (mod (+ blankPosition 1) 3) 1)) ; Can Move Left
+			(if (null listc) ; check if listc is nill before trying to add to it
+				(setf listc (list (MoveBlankLeft list))) ; then
+				(setf listc (append listc (list (MoveBlankLeft list)))) ;else
+			)
+		)
+		(return-from BFS_GenerateSuccessors listc) ; Return listc
+    )
+	
+)
 
 ; Given a start state (BFS) return a path from the start to the goal.
 (defun SearchBfs (start type)
@@ -24,7 +62,7 @@
         )
 
         ; termination condition - return solution path when goal is found
-        ((goal-state? (node-state curNode)) (build-solution curNode CLOSED))
+        ((IsSolved (node-state curNode)) (build-solution curNode CLOSED))
 
         ; loop body
         (when (null OPEN) (return nil))             ; no solution
@@ -33,20 +71,29 @@
         (setf curNode (car OPEN))
         (setf OPEN (cdr OPEN))
         (setf CLOSED (cons curNode CLOSED))
+		
+		; Keep track of number of expanded nodes
+		(setf *Expanded* (1+ *Expanded*))
 
         ; add successors of current node to OPEN
-        (dolist (child (generate-successors (node-state curNode)))
-
+        (dolist (child (BFS_GenerateSuccessors (node-state curNode)))
+			
             ; for each child node
             (setf child (make-node :state child :parent (node-state curNode)))
+			
+			;(format t "children: ~A~%" child)
+			
+			;
+			(setf *GENERATED* (1+ *GENERATED*))
 
             ; if the node is not on OPEN or CLOSED
-            (if (and (not (member child OPEN   :test #'equal-states))
+            (when (and (not (member child OPEN   :test #'equal-states))
                      (not (member child CLOSED :test #'equal-states)))
 
+				(setf *DISTINCT* (1+ *DISTINCT*))
                 ; add it to the OPEN list
                 (cond
-
+					
                     ; BFS - add to end of OPEN list (queue)
                     ((eq type 'bfs) (setf OPEN (append OPEN (list child))))
                 )

@@ -16,7 +16,7 @@ Written Spring 2016 for CSC447/547 AI class.
 
 (defun MoveBlankUp (list)
 	(let ((x (position 0 list)) (nlist (copy-list list)))
-		(when (> x 3)
+		(when (> x 2)
 				(setf (nth x nlist) (nth (- x 3) nlist) )
 				(setf (nth (- x 3) nlist) 0 )
 				nlist
