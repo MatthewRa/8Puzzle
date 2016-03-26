@@ -48,29 +48,32 @@ Written Spring 2016 for CSC447/547 AI class.
     (format t "~D command line arguments: ~A~%" (length args) args)
 	(Start args)
 	(format t "Starting Puzzle: ~A~%~%" Puzzle)
-	
+
 	(when (null (solvable Puzzle))
 		(format t "Puzzle not solvable...~%")
 		(format t "Exiting...~%")
 		(exit)
 	)
-	
+
 	(format t "BFS graph search ~%")
 	(format t "---------------- ~%")
 	(setf SolutionPath (bfs Puzzle))
 	(format t "Solution found in ~d moves~%" (length SolutionPath))
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
-	
+
 	(format t "Soltuion Path: ~A~%~%" SolutionPath)
-	
+
 	(format t "DFID graph search ~%")
 	(format t "----------------- ~%")
-	
+    (setf SolutionPath (DFID Puzzle))
+	(format t "Solution found in ~d moves~%" (length SolutionPath))
+    (format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
+
+    (format t "Soltuion Path: ~A~%~%" SolutionPath)
+
 	(format t "A* graph search ~%")
 	(format t "--------------- ~%")
 )
 
 ; call the main function, passing command-line arguments
 (main *ARGS*)
-
-
