@@ -61,16 +61,15 @@ Written Spring 2016 for CSC447/547 AI class.
 	(format t "Solution found in ~d moves~%" (length SolutionPath))
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 
-	(format t "Soltuion Path: ~A~%~%" SolutionPath)
+	(printSolution SolutionPath)
 
 	(format t "DFID graph search ~%")
 	(format t "----------------- ~%")
-    (setf SolutionPath (DFID Puzzle))
+  (setf SolutionPath (DFID Puzzle))
 	(format t "Solution found in ~d moves~%" (length SolutionPath))
-    (format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
+  (format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 
-    (format t "Soltuion Path: ~A~%~%" SolutionPath)
-
+	(printSolution SolutionPath)
 	(format t "A* graph search ~%")
 	(format t "--------------- ~%")
 )
