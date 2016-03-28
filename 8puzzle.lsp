@@ -59,7 +59,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	(format t "BFS graph search ~%")
 	(format t "---------------- ~%")
 	(setf SolutionPath (bfs Puzzle))
-	(format t "Solution found in ~d moves~%" (length SolutionPath))
+	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 
 	(printSolution SolutionPath)
@@ -67,7 +67,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	(format t "DFID graph search ~%")
 	(format t "----------------- ~%")
   (setf SolutionPath (DFID Puzzle))
-	(format t "Solution found in ~d moves~%" (length SolutionPath))
+	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
   (format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 
 	(printSolution SolutionPath)

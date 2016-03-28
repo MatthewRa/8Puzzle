@@ -1,4 +1,5 @@
 (load 'PuzzleFuncs)
+; Global variable definition
 (defvar *OPEN* nil)
 (defvar *CLOSED* nil)
 (defvar *EXPANDED* 0)
@@ -6,51 +7,59 @@
 (defvar *DISTINCT* 0)
 
 (defun DFID (lst)
+    "This function calls a depth bounded DFS with an increasing depth bound"
     (let ((solution NIL))
+        ; Reset global counters
         (setf *GENERATED* 0)
         (setf *DISTINCT* 0)
         (setf *EXPANDED* 0)
-        (do ((x 1 (1+ x))) ((not (null solution)) solution);((> x 3) solution)
+
+        ; Call DFS, iterating the depth bound until a solution is found
+        (do ((x 1 (1+ x))) ((not (null solution)) solution)
             (setf *OPEN* nil)
             (setf *CLOSED* nil)
             (setf solution (reverse (DFS lst x)))
+            (setf *DISTINCT* (+ *DISTINCT* (length *OPEN*)))
+            (setf *DISTINCT* (+ *DISTINCT* (length *CLOSED*)))
+            (print "OPEN")
+            (print *OPEN*)
+            (print "CLOSED")
+            (print *CLOSED*)
         )
     )
 )
 
 (defun DFS (root bound)
-    (let ((found nil) (current nil) (depth 0) (max (expt 4 (- bound 1))))
+    "This function implements a depth first search. If it reaches the specified
+    depth, then the search will stop and return NIL."
+    (let ((found nil) (current nil) (depth 0))
+        ; Initialize the OPEN list to contain the starting puzzle
         (push (list root nil) *OPEN*)
 
-        (do ((x 0 (1+ x))) ((or found (>= x max)) found)
-            (setf current (car (last *OPEN*)))
-            (setf *open* (remove (car (last *open*)) *open*))
+        (do () ((or found (null *OPEN*)) found)
+            (setf current (pop *OPEN*))
             (if (IsSolved (car current)) (setf found current))
-
             (if (car (cdr current)) (setf depth (length current)) (setf depth 1))
-
             (push (car current) *CLOSED*)
-            (if (< depth bound) (GenerateSuccessors current))
-            (incf *EXPANDED*)
-            (if (null *OPEN*) (setf x max))
+            (when (< depth bound) (incf *EXPANDED*) (GenerateSuccessors current))
         )
     )
 )
 
 (defun GenerateSuccessors (node)
     (let ((newNode nil))
-        (setf newNode (MoveBlankLeft (car node)))
-        (if newNode (incf *generated*))
-        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (incf *DISTINCT*) (push (makeList node newNode) *OPEN*))
-        (setf newNode (MoveBlankDown (car node)))
-        (if newNode (incf *generated*))
-        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (incf *DISTINCT*) (push (makeList node newNode) *OPEN*))
         (setf newNode (MoveBlankUp (car node)))
         (if newNode (incf *generated*))
-        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (incf *DISTINCT*) (push (makeList node newNode) *OPEN*))
+        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (push (makeList node newNode) *OPEN*))
         (setf newNode (MoveBlankRight (car node)))
         (if newNode (incf *generated*))
-        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (incf *DISTINCT*) (push (makeList node newNode) *OPEN*))
+        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (push (makeList node newNode) *OPEN*))
+        (setf newNode (MoveBlankLeft (car node)))
+        (if newNode (incf *generated*))
+        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (push (makeList node newNode) *OPEN*))
+        (setf newNode (MoveBlankDown (car node)))
+        (if newNode (incf *generated*))
+        (when (and (not (null newNode)) (not (position newNode *CLOSED* :test #'equal))) (push (makeList node newNode) *OPEN*))
     )
 )
 
