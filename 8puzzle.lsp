@@ -7,7 +7,7 @@ Author: Alex Herman, Marcus HaberLing, Matthew Rames
 Written Spring 2016 for CSC447/547 AI class.
 
 	8puzzle is the starting point of the application. If an argument is passed in
-	through command line (ex. clisp 8puzzle.lsp easy.puz) then the puzzle file is 
+	through command line (ex. clisp 8puzzle.lsp easy.puz) then the puzzle file is
 	read and stored into a list. If 8puzzle is started through clisp (ex. (load '8puzzle))
 	then you can type (8puzzle '[optionalList]) you can either give 8puzzle a list or
 	it will prompt you to enter a list for the puzzle. Then different search algorithms are ran on the
@@ -73,7 +73,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	; Use breadth first search
 	(format t "BFS graph search ~%")
 	(format t "---------------- ~%")
-	(setf SolutionPath (DFID Puzzle))
+	(setf SolutionPath (bfs Puzzle))
 	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 	(printSolution SolutionPath)

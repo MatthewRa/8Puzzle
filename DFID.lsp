@@ -62,12 +62,11 @@ Description: This file includes an implementation of a Depth First Search using
 
 			; If the node is within the depth bound, check if it is the solution
 			; and expand its successors.
-			(when (<= depth bound)
-				(if (IsSolved (car current)) (setf found current))
+			(if (IsSolved (car current)) (setf found current))
+			(when (< depth bound)
 				(incf *EXPANDED*)
 				(DFIDGenerateSuccessors current)
 			)
-
 			; Once it is used, put it on the CLOSED list
 			(push (car current) *CLOSED*)
 		)
