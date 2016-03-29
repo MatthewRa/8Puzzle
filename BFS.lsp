@@ -1,7 +1,4 @@
 (load 'PuzzleFuncs)
-(defvar *EXPANDED* 0)
-(defvar *GENERATED* 0)
-(defvar *DISTINCT* 0)
 
 ; Node structure: stores state and parent.
 (defstruct node state parent)
