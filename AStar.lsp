@@ -1,44 +1,78 @@
 (load "PuzzleFuncs.lsp")
 
-(defun A* (node open closed h)
-  (print (puz node))
-	(cond
-      ( (correct (puz node)) node )
-      (t
-        (if open (nconc open 
-          (generateSuccessors node h closed)) 
-          (setf open (generateSuccessors node h closed))
-        )
-        (if closed 
-          (setf closed (cons node closed))
-          (setf closed (list node))
-        )
-        (setf open (sort open #'< :key #'cadr))
-        (setf node (car open))
-        (setf open (cdr open))
-        ;(print open)
-        ;(break)
-        (A* node open closed h)
-        
+(defun Ar* (node open closed h)
+  ;(print (puz node))
+  (cond
+    ( (correct (puz node)) node )
+    (t
+
+     (if open (nconc open 
+        (generateSuccessors node h closed)) 
+        (setf open (generateSuccessors node h closed))
       )
+      (if closed 
+        (setf closed (cons node closed))
+        (setf closed (list node))
+      )
+      (setf open (sort open #'< :key #'cadr))
+      (setf node (car open))
+      (setf open (cdr open))
+      ;(print open)
+      ;(break)
+      (Ar* node open closed h)
+      
     )
+  )
 )
 
+(defun A* (puzzle h)
+  (let 
+  	( 
+  		(open nil)
+  		(closed nil) 
+  		(node (puz-node nil puzzle h))
+  		(counter 0)
+  	)
 
-(defun puz-top (list)
-  (car (cdr list)) 
+    (loop while (and node (not (correct (puz node)))) do
+      (if open (nconc open 
+        (generateSuccessors node h closed)) 
+        (setf open (generateSuccessors node h closed))
+      )
+      (if closed 
+        (setf closed (cons node closed))
+        (setf closed (list node))
+      )
+      (setf open (sort open #'< :key #'cadr))
+      (setf node (car open))
+      (setf open (cdr open))
+      (setf counter (+ counter 1) )
+      
+      (print (puz node))
+    )
+    
+  )
 )
 
-(defun puz-pop (list)
-	(let (return)
-		(setf return (car list))
-  	(setf list (cdr list))
-		return
-	)
-)
 
 (defun puz-push (node list)
   (setf list (cons node (list list)))
+)
+
+(defun puz-node (parent list h)
+  (if (null parent) 
+    (nconc (list 0 0 parent) list)
+    (nconc
+      (nconc 
+        (list 
+          (+ 1 (depth parent)) 
+          (+ (+ (depth parent) (funcall h list)) 1)
+        )
+        parent
+      )
+      list
+    )
+  )
 )
 
 (defun puz-node (parent list h)
