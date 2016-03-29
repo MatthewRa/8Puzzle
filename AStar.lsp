@@ -30,11 +30,12 @@
   	(
   		(open nil)
   		(closed nil)
-  		(node (puz-node nil puzzle h))
-  		(counter 0)
+      (node (puz-node nil puzzle h))
+      (counter 0)
   	)
 
     (loop while (and node (not (correct (puz node)))) do
+
       (if open (nconc open
         (generateSuccessors node h closed))
         (setf open (generateSuccessors node h closed))
@@ -48,7 +49,6 @@
       (setf open (cdr open))
       (setf counter (+ counter 1) )
 
-      (print open)
     )
     (result node)
   )
@@ -75,6 +75,7 @@
   )
 )
 
+
 (defun puz-node (parent list h)
   (if (null parent)
     (nconc (list 0 0 parent) list)
@@ -91,6 +92,48 @@
 
 (defun h-test (list)
   0
+)
+
+(defun h-misplaced-tiles (list)
+  (h-m-t-internal list '(1 2 3 8 0 4 7 6 5 ))
+)
+
+(defun h-m-t-internal (list1 list2)
+  (cond
+    ( (null list1) 
+      0
+    )
+    ( (= (car list1) (car list2) ) 
+      (h-m-t-internal (cdr list1) (cdr list2) ) 
+    )
+    ( t 
+      (+ 1  (h-m-t-internal (cdr list1) (cdr list2)))
+    )
+  )
+)
+
+(defun h-manhattan-squared (list)
+  (let ((x (h-manhattan-distance list)))
+    (* x x )
+  )
+)
+
+(defun h-manhattan-distance (list)
+  (let ( (final '(1 2 3 8 0 4 7 6 5 )) (dist 0) )
+    (loop for i in final do
+      (setf dist
+        (+ dist
+          (abs (- (floor (/ (position i list) 3)) (floor (/ (position i final) 3)) ))
+        ) 
+      )
+      (setf dist
+        (+ dist
+          (abs (- (floor (mod (position i list) 3)) (floor (mod (position i final) 3)) ))
+        ) 
+      )
+    )
+    dist
+  )
 )
 
 (defun correct (list)
@@ -120,39 +163,33 @@
 	)
 )
 
+(defun contains_better (node closed)
+  (let ( (other (contains (puz node) closed)) )
+  (cond
+    (other (>= (distance other) (distance node) ) )
+    ( t nil )
+  )
+  )
+)
+
 (defun contains (list closed)
   (cond
     ( (null closed)   nil )
     ( (equal list (puz (car closed)))
 
-      (distance (puz (car closed)))
+      (car closed)
     )
     ( t (contains list (cdr closed)))
   )
 )
 
-(defun generateSuccessors (node h closed)
+(defun generateSuccessorsOld (node h closed)
   (let ( (newPuzzle nil) ( nodeList nil ) (test nil))
     (setf newPuzzle (MoveBlankUp (puz node)))
     (if (and newPuzzle (not (contains (puz node) closed)))
       (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
     )
     (setf newPuzzle (MoveBlankDown (puz node)))
-    #|(print "test4")
-    (contains (puz node) closed)
-    (print "test5")
-    (puz-node node newPuzzle h)
-    (print "test6")
-    (cons (puz-node node newPuzzle h) nodeList)
-    (print "test7")
-    (print (length nodeList))
-    (print "test8")
-    (setf test nodeList)
-    (print "test9")
-    (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
-    (print "test10")
-    (setf nodeList test)
-    (print "test11")|#
     (if (and newPuzzle (not (contains (puz node) closed)))
       (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
     )
@@ -162,6 +199,28 @@
     )
     (setf newPuzzle (MoveBlankRight (puz node)))
     (if (and newPuzzle (not (contains (puz node) closed)))
+      (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
+    )
+    nodeList
+  )
+)
+
+(defun generateSuccessors (node h closed)
+  (let ( (newPuzzle nil) ( nodeList nil ) (test nil))
+    (setf newPuzzle (MoveBlankUp (puz node)))
+    (if (and newPuzzle (not (contains_better newPuzzle closed)))
+      (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
+    )
+    (setf newPuzzle (MoveBlankDown (puz node)))
+    (if (and newPuzzle (not (contains_better newPuzzle closed)))
+      (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
+    )
+    (setf newPuzzle (MoveBlankLeft (puz node)))
+    (if (and newPuzzle (not (contains_better newPuzzle closed)))
+      (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
+    )
+    (setf newPuzzle (MoveBlankRight (puz node)))
+    (if (and newPuzzle (not (contains_better newPuzzle closed)))
       (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
     )
     nodeList
