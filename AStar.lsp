@@ -14,7 +14,7 @@
 
 
     (loop while (and node (not (correct (puz node)))) do
-
+			
       (if open (nconc open
         (A*GenerateSuccessors node h closed))
         (setf open (A*GenerateSuccessors node h closed))
@@ -29,7 +29,8 @@
       (setf counter (+ counter 1) )
 
     )
-    (result node)
+		(setf *DISTINCT* (+ (length open) (length closed) ) )
+    (reverse (result node))
   )
 )
 
@@ -190,22 +191,28 @@
 
 (defun generateSuccessors1 (node h closed)
   (let ( (newPuzzle nil) ( nodeList nil ) (test nil))
+		(setf *EXPANDED* (+ 1 *EXPANDED*))
     (setf newPuzzle (puz-node node (MoveBlankUp (puz node)) h))
+		(if newPuzzle (setf *GENERATED* (+ 1 *GENERATED*)))
     (if (and newPuzzle (not (contains_better newPuzzle closed)))
       (setf nodeList (cons newPuzzle nodeList))
     )
     (setf newPuzzle (puz-node node (MoveBlankUp (puz node)) h))
+		(if newPuzzle (setf *GENERATED* (+ 1 *GENERATED*)))
     (if (and newPuzzle (not (contains_better newPuzzle closed)))
       (setf nodeList (cons newPuzzle nodeList))
     )
     (setf newPuzzle (puz-node node (MoveBlankUp (puz node)) h))
+		(if newPuzzle (setf *GENERATED* (+ 1 *GENERATED*)))
     (if (and newPuzzle (not (contains_better newPuzzle closed)))
       (setf nodeList (cons newPuzzle nodeList))
     )
     (setf newPuzzle (puz-node node (MoveBlankUp (puz node)) h))
+		(if newPuzzle (setf *GENERATED* (+ 1 *GENERATED*)))
     (if (and newPuzzle (not (contains_better newPuzzle closed)))
       (setf nodeList (cons newPuzzle nodeList))
     )
+		
     nodeList
   )
 )
