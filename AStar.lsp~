@@ -1,0 +1,19 @@
+(defun A* (puzz open closed)
+  ( )
+  )
+
+(defun push (item list)
+  (setf list (cons item list))
+)
+
+(defun pop (list)
+  (let (x)
+    (setf x (car list))
+    (setf list (cdr list))
+    x
+  )
+)
+
+(defun top (list)
+  (car (cdr list)) 
+)
