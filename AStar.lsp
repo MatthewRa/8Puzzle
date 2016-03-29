@@ -23,7 +23,6 @@
 
     ;loop while their is a valid open node thats not the answer
     (loop while (and node (not (correct (puz node)))) do
-			
       ;Add successors to open list (if is to handle empty open list)
       (if open (nconc open
         (A*GenerateSuccessors node h closed))
@@ -83,13 +82,13 @@
 |#
 (defun h-m-t-internal (list1 list2)
   (cond
-    ( (null list1) 
+    ( (null list1)
       0
     )
-    ( (= (car list1) (car list2) ) 
-      (h-m-t-internal (cdr list1) (cdr list2) ) 
+    ( (= (car list1) (car list2) )
+      (h-m-t-internal (cdr list1) (cdr list2) )
     )
-    ( t 
+    ( t
       (+ 1  (h-m-t-internal (cdr list1) (cdr list2)))
     )
   )
@@ -116,20 +115,20 @@
 (defun h-manhattan-distance (list)
   (let ( (final '(1 2 3 8 0 4 7 6 5 )) (dist 0) )
   (cond
-    ( (null list) 
-      0 
+    ( (null list)
+      0
     )
     (t
       (loop for i in final do
         (setf dist
           (+ dist
             (abs (- (floor (/ (position i list) 3)) (floor (/ (position i final) 3)) ))
-          ) 
+          )
         )
         (setf dist
           (+ dist
             (abs (- (floor (mod (position i list) 3)) (floor (mod (position i final) 3)) ))
-          ) 
+          )
         )
       )
       dist
@@ -228,4 +227,3 @@
     nodeList
   )
 )
-
