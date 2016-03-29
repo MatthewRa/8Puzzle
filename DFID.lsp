@@ -65,7 +65,7 @@ Description: This file includes an implementation of a Depth First Search using
 			(when (<= depth bound)
 				(if (IsSolved (car current)) (setf found current))
 				(incf *EXPANDED*)
-				(GenerateSuccessors current)
+				(DFIDGenerateSuccessors current)
 			)
 
 			; Once it is used, put it on the CLOSED list
@@ -74,7 +74,7 @@ Description: This file includes an implementation of a Depth First Search using
 	)
 )
 
-(defun GenerateSuccessors (node)
+(defun DFIDGenerateSuccessors (node)
 	"This function pushes each valid successor onto the OPEN list"
 	(let ((newNode nil))
 		; For the 4 possible operations, do the following:

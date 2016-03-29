@@ -81,14 +81,14 @@ Written Spring 2016 for CSC447/547 AI class.
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 	(printSolution SolutionPath)
 
-	(format t "A* graph search (Heuristic: tiles out of place) ~%")
+	(format t "A* graph search (Heuristic: Manhattan Distance) ~%")
 	(format t "--------------- ~%")
 	(setf SolutionPath (A* Puzzle #'h-manhattan-distance))
 	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 	(printSolution SolutionPath)
 
-	(format t "A* graph search (Heuristic: tiles out of place) ~%")
+	(format t "A* graph search (Heuristic: Manhattan Distance Squared) ~%")
 	(format t "--------------- ~%")
 	(setf SolutionPath (A* Puzzle #'h-manhattan-squared))
 	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
