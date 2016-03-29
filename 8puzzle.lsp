@@ -21,7 +21,6 @@ Written Spring 2016 for CSC447/547 AI class.
 	(cond
 		((> (length args) 1)
 			(setf Puzzle args)
-			;(setf Puzzle (mapcar #'parse-integer Puzzle))
 		)
 		((= (length args) 1)
 			(setf Puzzle (ReadInPuzzle (car args)))
