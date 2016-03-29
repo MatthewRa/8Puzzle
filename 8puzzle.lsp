@@ -49,19 +49,22 @@ Written Spring 2016 for CSC447/547 AI class.
 
 
 (defun 8puzzle ( &optional args )
-  (format t "~D command line arguments: ~A~%" (length args) args)
+	"This is the main logic of the program. It prints the solution to an 8puzzle
+	found using 5 different search strategies."
 	(Start args)
 	(format t "Starting Puzzle: ~A~%~%" Puzzle)
 
+	; Make sure the starting puzzle is in a valid position
 	(when (null (solvable Puzzle))
 		(format t "Puzzle not solvable...~%")
 		(format t "Exiting...~%")
 		(exit)
 	)
 
+	; Use breadth first search
 	(format t "BFS graph search ~%")
 	(format t "---------------- ~%")
-	(setf SolutionPath (bfs Puzzle))
+	(setf SolutionPath (DFID Puzzle))
 	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 	(printSolution SolutionPath)
@@ -69,6 +72,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	(setf *DISTINCT* 0)
 	(setf *EXPANDED* 0)
 
+	; Use Depth First Search with Iterated Deepening
 	(format t "DFID graph search ~%")
 	(format t "----------------- ~%")
   (setf SolutionPath (DFID Puzzle))
@@ -76,6 +80,7 @@ Written Spring 2016 for CSC447/547 AI class.
   (format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 	(printSolution SolutionPath)
 
+	; Use an A* search with the admissable heuristic number of tiles out of place
 	(format t "A* graph search (Heuristic: tiles out of place) ~%")
 	(format t "--------------- ~%")
 	(setf SolutionPath (A* Puzzle #'h-misplaced-tiles))
@@ -83,6 +88,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 	(printSolution SolutionPath)
 
+	; Use an A* search with the admissable heuristic manhattan distance
 	(format t "A* graph search (Heuristic: Manhattan Distance) ~%")
 	(format t "--------------- ~%")
 	(setf SolutionPath (A* Puzzle #'h-manhattan-distance))
@@ -90,6 +96,7 @@ Written Spring 2016 for CSC447/547 AI class.
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
 	(printSolution SolutionPath)
 
+	; Use an A* search with the inadmissable heuristic manhattan distance squared
 	(format t "A* graph search (Heuristic: Manhattan Distance Squared) ~%")
 	(format t "--------------- ~%")
 	(setf SolutionPath (A* Puzzle #'h-manhattan-squared))
