@@ -12,6 +12,7 @@ Written Spring 2016 for CSC447/547 AI class.
 
 (load 'solvable)
 (load 'PuzzleFuncs)
+(load 'AStar)
 (load 'DFID)
 (load 'BFS)
 
@@ -64,7 +65,6 @@ Written Spring 2016 for CSC447/547 AI class.
 	(setf SolutionPath (bfs Puzzle))
 	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
 	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
-
 	(printSolution SolutionPath)
 
 	(format t "DFID graph search ~%")
@@ -72,10 +72,28 @@ Written Spring 2016 for CSC447/547 AI class.
   (setf SolutionPath (DFID Puzzle))
 	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
   (format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
-
 	(printSolution SolutionPath)
-	(format t "A* graph search ~%")
+
+	(format t "A* graph search (Heuristic: tiles out of place) ~%")
 	(format t "--------------- ~%")
+	(setf SolutionPath (A* Puzzle #'h-misplaced-tiles))
+	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
+	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
+	(printSolution SolutionPath)
+
+	(format t "A* graph search (Heuristic: tiles out of place) ~%")
+	(format t "--------------- ~%")
+	(setf SolutionPath (A* Puzzle #'h-manhattan-distance))
+	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
+	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
+	(printSolution SolutionPath)
+
+	(format t "A* graph search (Heuristic: tiles out of place) ~%")
+	(format t "--------------- ~%")
+	(setf SolutionPath (A* Puzzle #'h-manhattan-squared))
+	(format t "Solution found in ~d moves~%" (- (length SolutionPath) 1))
+	(format t "~d nodes generated (~d distinct nodes), ~d nodes expanded~%~%" *GENERATED* *DISTINCT* *EXPANDED*)
+	(printSolution SolutionPath)
 )
 
 (when (= (length *ARGS*) 1)

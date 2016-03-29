@@ -23,9 +23,6 @@ Description: This file includes an implementation of a Depth First Search using
 ; Global variable definition
 (defvar *OPEN* nil)
 (defvar *CLOSED* nil)
-(defvar *EXPANDED* 0)
-(defvar *GENERATED* 0)
-(defvar *DISTINCT* 0)
 
 (defun DFID (lst)
 	"This function calls a depth bounded DFS with an increasing depth bound"
