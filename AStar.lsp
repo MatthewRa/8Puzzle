@@ -6,11 +6,11 @@
     ( (correct (puz node)) node )
     (t
 
-     (if open (nconc open 
-        (generateSuccessors node h closed)) 
+     (if open (nconc open
+        (generateSuccessors node h closed))
         (setf open (generateSuccessors node h closed))
       )
-      (if closed 
+      (if closed
         (setf closed (cons node closed))
         (setf closed (list node))
       )
@@ -20,26 +20,26 @@
       ;(print open)
       ;(break)
       (Ar* node open closed h)
-      
+
     )
   )
 )
 
 (defun A* (puzzle h)
-  (let 
-  	( 
+  (let
+  	(
   		(open nil)
-  		(closed nil) 
+  		(closed nil)
   		(node (puz-node nil puzzle h))
   		(counter 0)
   	)
 
     (loop while (and node (not (correct (puz node)))) do
-      (if open (nconc open 
-        (generateSuccessors node h closed)) 
+      (if open (nconc open
+        (generateSuccessors node h closed))
         (setf open (generateSuccessors node h closed))
       )
-      (if closed 
+      (if closed
         (setf closed (cons node closed))
         (setf closed (list node))
       )
@@ -47,10 +47,10 @@
       (setf node (car open))
       (setf open (cdr open))
       (setf counter (+ counter 1) )
-      
-      (print (puz node))
+
+      (print open)
     )
-    
+    (result node)
   )
 )
 
@@ -60,12 +60,12 @@
 )
 
 (defun puz-node (parent list h)
-  (if (null parent) 
+  (if (null parent)
     (nconc (list 0 0 parent) list)
     (nconc
-      (nconc 
-        (list 
-          (+ 1 (depth parent)) 
+      (nconc
+        (list
+          (+ 1 (depth parent))
           (+ (+ (depth parent) (funcall h list)) 1)
         )
         parent
@@ -76,11 +76,11 @@
 )
 
 (defun puz-node (parent list h)
-  (if (null parent) 
+  (if (null parent)
     (nconc (list 0 0 parent) list)
-    (nconc 
-      (list 
-        (+ 1 (depth parent)) 
+    (nconc
+      (list
+        (+ 1 (depth parent))
         (+ (+ (depth parent) (funcall h list)) 1)
         parent
       )
@@ -115,7 +115,7 @@
 
 (defun result (node)
 	(cond
-		((null(parent node)) (cons (puz node) nil))	
+		((null(parent node)) (cons (puz node) nil))
 		(t (append (cons (puz node) nil) (result (parent node)) ))
 	)
 )
@@ -124,7 +124,7 @@
   (cond
     ( (null closed)   nil )
     ( (equal list (puz (car closed)))
-      
+
       (distance (puz (car closed)))
     )
     ( t (contains list (cdr closed)))
@@ -132,12 +132,27 @@
 )
 
 (defun generateSuccessors (node h closed)
-  (let ( (newPuzzle nil) ( nodeList nil ) )
+  (let ( (newPuzzle nil) ( nodeList nil ) (test nil))
     (setf newPuzzle (MoveBlankUp (puz node)))
     (if (and newPuzzle (not (contains (puz node) closed)))
       (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
     )
     (setf newPuzzle (MoveBlankDown (puz node)))
+    #|(print "test4")
+    (contains (puz node) closed)
+    (print "test5")
+    (puz-node node newPuzzle h)
+    (print "test6")
+    (cons (puz-node node newPuzzle h) nodeList)
+    (print "test7")
+    (print (length nodeList))
+    (print "test8")
+    (setf test nodeList)
+    (print "test9")
+    (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
+    (print "test10")
+    (setf nodeList test)
+    (print "test11")|#
     (if (and newPuzzle (not (contains (puz node) closed)))
       (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
     )
@@ -150,5 +165,5 @@
       (setf nodeList (cons (puz-node node newPuzzle h) nodeList))
     )
     nodeList
-  ) 
+  )
 )
