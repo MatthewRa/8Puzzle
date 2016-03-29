@@ -13,6 +13,10 @@ Description: This file contains the functions that are used to move the blank
 
 ;--------------------------------------------------------------------------
 
+(defvar *EXPANDED* 0)
+(defvar *GENERATED* 0)
+(defvar *DISTINCT* 0)
+
 (defun IsSolved (list)
 	"This function returns T if the puzzle is solved and NIL if not."
 	(equal list '(1 2 3 8 0 4 7 6 5))

@@ -1,7 +1,21 @@
+#|
+                    ***** BFS.lsp *****
+
+Author: Matthew Rames
+Written Spring 2016 for CSC447/547 AI class.
+
+Description: This file includes an implementation of a Breadth first search.
+	It can be called using the command "(bfs Puzzle)" where puz
+	is a list of numbers that represents a puzzle. This file can be used with any
+	n * n puzzle, but the file PuzzleFuncs.lsp must implement the functions MoveBlankUp,
+	MoveBlankDown, MoveBlankLeft, MoveBlankRight, and IsSolved. The movement functions
+	must also return NIL if the move is not valid.
+
+|#
+
+;--------------------------------------------------------------------------
+
 (load 'PuzzleFuncs)
-(defvar *EXPANDED* 0)
-(defvar *GENERATED* 0)
-(defvar *DISTINCT* 0)
 
 ; Node structure: stores state and parent.
 (defstruct node state parent)
@@ -21,28 +35,28 @@
 		;(format t "Expanding Node (Blank Position: ~D)~%" blankPosition)
 		
 		(when (> blankPosition 2) ; Can Move up
-			(if (null listc) ; check if listc is nill before trying to add to it
+			(if (null listc) ; check if listc is nil before trying to add to it
 				(setf listc (list (MoveBlankUp list))) ; then
 				(setf listc (append listc (list (MoveBlankUp list)))) ;else
 			)
 		)
 		
 		(when (< blankPosition 6) ; Can Move Down 
-			(if (null listc) ; check if listc is nill before trying to add to it
+			(if (null listc) ; check if listc is nil before trying to add to it
 				(setf listc (list (MoveBlankDown list))) ; then
 				(setf listc (append listc (list (MoveBlankDown list)))) ;else
 			)
 		)
 		
 		(when (not (= (mod (+ blankPosition 1) 3) 0)) ; Can Move Right
-			(if (null listc) ; check if listc is nill before trying to add to it
+			(if (null listc) ; check if listc is nil before trying to add to it
 				(setf listc (list (MoveBlankRight list))) ; then
 				(setf listc (append listc (list (MoveBlankRight list)))) ;else
 			)
 		)
 		
 		(when (not (= (mod (+ blankPosition 1) 3) 1)) ; Can Move Left
-			(if (null listc) ; check if listc is nill before trying to add to it
+			(if (null listc) ; check if listc is nil before trying to add to it
 				(setf listc (list (MoveBlankLeft list))) ; then
 				(setf listc (append listc (list (MoveBlankLeft list)))) ;else
 			)
@@ -83,13 +97,14 @@
 			
 			;(format t "children: ~A~%" child)
 			
-			;
+			; Increment generated nodes
 			(setf *GENERATED* (1+ *GENERATED*))
 
             ; if the node is not on OPEN or CLOSED
             (when (and (not (member child OPEN   :test #'equal-states))
                      (not (member child CLOSED :test #'equal-states)))
 
+				; Increment distinct nodes
 				(setf *DISTINCT* (1+ *DISTINCT*))
                 ; add it to the OPEN list
                 (cond
